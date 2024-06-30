@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Workout() {
   const [workout, setWorkout] = React.useState({
@@ -50,8 +51,9 @@ function Workout() {
           <input id="set-count" type="number" className="form-control w-50" value={workout.numSets} onChange={handleNumSetsChanged} />
         </div>
       </div >
-      <button type="button" className="btn btn-success btn-lg">Start</button>
-      <button type="button" className="btn btn-danger btn-sm">Delete</button>
+      <Link to="/create/timer" className="btn btn-success btn-lg">Start</Link>
+      <Link to="/" className="btn btn-secondary btn-sm">Cancel</Link>
+      <Link to="/" className="btn btn-primary btn-sm">Save</Link>
     </div>
 
   );

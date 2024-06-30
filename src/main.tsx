@@ -7,6 +7,7 @@ import {
 import ErrorPage from "./error-page";
 import App from './App.tsx'
 import Workout from './Workout.tsx'
+import Timer from './Timer.tsx'
 import Overview from './Overview.tsx'
 import './scss/styles.scss'
 
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "create",
         element: <Workout />,
+      },
+      {
+        path: "create/timer",
+        element: <Timer />,
       },
     ],
   },
