@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Workout() {
+function EditWorkoutPage() {
   const [workout, setWorkout] = React.useState({
     numSets: 3,
     exercises: [20, 20, 20],
@@ -59,4 +59,4 @@ function Workout() {
   );
 }
 
-export default Workout
+export default EditWorkoutPage

@@ -6,9 +6,9 @@ import {
 } from "react-router-dom";
 import ErrorPage from "./error-page";
 import App from './App.tsx'
-import Workout from './Workout.tsx'
-import Timer from './Timer.tsx'
-import Overview from './Overview.tsx'
+import EditWorkoutPage from './edit-workout-page.tsx'
+import TimerPage from './timer-page.tsx'
+import OverviewPage from './overview-page.tsx'
 import './scss/styles.scss'
 
 const router = createBrowserRouter([
@@ -19,15 +19,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Overview />,
+        element: <OverviewPage />,
       },
       {
         path: "create",
-        element: <Workout />,
+        element: <EditWorkoutPage />,
       },
       {
         path: "create/timer",
-        element: <Timer />,
+        element: <TimerPage />,
       },
     ],
   },

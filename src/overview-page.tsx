@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-function Overview() {
+function OverviewPage() {
   return (
     <>
     <div className="card" style={{width: '18rem'}}>
@@ -21,4 +21,4 @@ function Overview() {
   );
 }
 
-export default Overview
+export default OverviewPage
