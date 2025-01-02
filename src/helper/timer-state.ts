@@ -78,3 +78,17 @@ export function getWorkoutState(workout: Workout, pos: number): WorkoutState {
         totalDuration: totalDuration
     };
 }
+
+export function stepState(workout: Workout, state: WorkoutState, dir: 1|-1): WorkoutState {
+    if (dir > 0) {
+        // jump to next exercise
+        return getWorkoutState(workout, state.position + state.exercise.duration - state.exercise.position);
+    }
+    // jump to beginning of exercise, if we are not on the beginning yet.
+    if (state.exercise.position > 1)
+        return getWorkoutState(workout, state.position - state.exercise.position);
+
+    // jump to beginning of previous exercise
+    const prevExerciseState = getWorkoutState(workout, state.position - state.exercise.position - 1);
+    return getWorkoutState(workout, prevExerciseState.position - prevExerciseState.exercise.position);
+}

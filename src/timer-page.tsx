@@ -4,7 +4,7 @@ import 'react-circular-progressbar/dist/styles.css';
 
 import beepSound from './sounds/beep.wav'
 import { Workout } from './helper/workout';
-import { getWorkoutState } from './helper/timer-state';
+import { getWorkoutState, stepState } from './helper/timer-state';
 
 const beep = new Audio(beepSound);
 
@@ -40,9 +40,11 @@ function TimerPage() {
         stopTimer();
         return workoutState;
       }
-      return getWorkoutState(workout, workoutState.position + 1)
+      const newState = getWorkoutState(workout, workoutState.position + 1);
+      if (newState.exercise.duration - newState.exercise.position <= 3)
+        beep.play();
+      return newState;
     });
-    beep.play();
   }
   const handlePlayPause = () => {
     if (paused) {
@@ -56,12 +58,24 @@ function TimerPage() {
     stopTimer();
     setState(getWorkoutState(workout, 0));
   }
+  const handlePrevious = () => {
+    setState(workoutState => stepState(workout, workoutState, -1))
+  };
+  const handleNext = () => {
+    setState(workoutState => stepState(workout, workoutState, +1))
+  };
 
   return (
     <>
       <div className="container">
+        <button type="button" className="btn btn-primary btn-lg fs-3 m-2" onClick={handlePrevious}>
+          &#x23EE;&#xFE0E;
+        </button>
         <button type="button" className="btn btn-primary btn-lg fs-3 m-2" onClick={handlePlayPause}
           dangerouslySetInnerHTML={{ __html: paused ? "&#x23F5;&#xFE0E;" : "&#x23F8;&#xFE0E;" }}>
+        </button>
+        <button type="button" className="btn btn-primary btn-lg fs-3 m-2" onClick={handleNext}>
+          &#x23ED;&#xFE0E;
         </button>
         <button type="button" className="btn btn-primary btn-lg fs-3 m-2" onClick={handleReset}>
           &#10226;
