@@ -1,4 +1,11 @@
 import React, { useEffect } from 'react';
+import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+
+import beepSound from './sounds/beep.wav'
+
+const beep = new Audio(beepSound);
+
 
 function Timer() {
   const [paused, setPaused] = React.useState(true);
@@ -33,6 +40,7 @@ function Timer() {
     if (paused) {
       timerRef.current = setInterval(() => {
         setOverallSeconds(overallSeconds => overallSeconds + 1);
+        beep.play();
       }, 1000);
     } else {
       clearInterval(timerRef.current);
@@ -51,18 +59,17 @@ function Timer() {
   return (
     <>
       <div className="container">
-        <div id="timer" className="text-center" style={{ fontSize: 80 }}>
-          {getCounter(overallSeconds)}
-        </div>
-        <div className="progress" role="progressbar">
-          <div className="progress-bar" style={{ width: `${getProgress(overallSeconds)}%` }}></div>
-        </div>
         <button type="button" className="btn btn-primary btn-lg fs-3 m-2" onClick={handlePlayPause}
           dangerouslySetInnerHTML={{ __html: paused ? "&#x23F5;&#xFE0E;": "&#x23F8;&#xFE0E;"  }}>
         </button>
         <button type="button" className="btn btn-primary btn-lg fs-3 m-2" onClick={handleReset}>
           &#10226;
         </button>
+        <CircularProgressbarWithChildren value={getProgress(overallSeconds)}>
+          <div id="timer" className="text-center" style={{ fontSize: 80 }}>
+            {getCounter(overallSeconds)}
+          </div>
+        </CircularProgressbarWithChildren>
       </div>
     </>
   );
