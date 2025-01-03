@@ -18,6 +18,10 @@ export type WorkoutState = {
     totalDuration: number;
 }
 
+export function getDurationOfSet(workout: Workout): number {
+    return workout.exercises.reduce((accu, current) => accu + current.duration, 0);
+}
+
 function getExerciseState(workout: Workout, pos: number): ExerciseState {
     let currentPos = pos;
     for (const exercise of workout.exercises) {
@@ -40,7 +44,7 @@ function getExerciseState(workout: Workout, pos: number): ExerciseState {
 }
 
 export function getWorkoutState(workout: Workout, pos: number): WorkoutState {
-    const setDuration = workout.exercises.reduce((accu, current) => accu + current.duration, 0);
+    const setDuration = getDurationOfSet(workout);
     const totalDuration = workout.preCountDuration
         + setDuration * workout.numSets
         + workout.restBetweenSetsDuration * (workout.numSets - 1);
