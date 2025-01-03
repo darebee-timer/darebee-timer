@@ -5,19 +5,15 @@ import 'react-circular-progressbar/dist/styles.css';
 import beepSound from './sounds/beep.wav'
 import { Workout } from './helper/workout';
 import { getWorkoutState, stepState } from './helper/timer-state';
+import { useParams } from 'react-router-dom';
+import { WorkoutStorage } from './helper/storage';
 
 const beep = new Audio(beepSound);
 
 
 function TimerPage() {
-  const workout: Workout = {
-    numSets: 2,
-    exercises: [
-      { type: 'work', duration: 5 }
-    ],
-    restBetweenSetsDuration: 10,
-    preCountDuration: 5,
-  }
+  const { workoutId } = useParams();
+  const workout: Workout = new WorkoutStorage().get(workoutId!)!.workout;
   const [paused, setPaused] = React.useState(true);
   const [state, setState] = React.useState(getWorkoutState(workout, 0));
   const timerRef = React.useRef<NodeJS.Timeout | undefined>(undefined);

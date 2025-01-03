@@ -1,12 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Exercise, Workout } from './helper/workout';
+import { WorkoutStorage } from './helper/storage';
 
-function EditWorkoutPage() {
-  const [workout, setWorkout] = React.useState({
-    numSets: 3,
-    exercises: [20, 20, 20],
-  });
-  const addExercise = (exercise: number) => {
+const defaultWorkout = {
+  exercises: [],
+  numSets: 3,
+  preCountDuration: 3,
+  restBetweenSetsDuration: 5,
+};
+
+function WorkoutPage(workoutId?: string) {
+  const [workout, setWorkout] = React.useState<Workout>(workoutId ? new WorkoutStorage().get(workoutId)!.workout : defaultWorkout);
+  const addExercise = (exercise: Exercise) => {
     setWorkout(currentWorkout => ({
       ...currentWorkout,
       exercises: [...currentWorkout.exercises, exercise]
@@ -19,14 +25,25 @@ function EditWorkoutPage() {
       numSets: Number(event.target.value)
     }));
   }
+  const navigate = useNavigate();
+  const handleStart = () => {
+    const storage = new WorkoutStorage();
+    let id = workoutId;
+    if (workoutId) {
+      storage.set(workoutId, workout);
+    } else {
+      id = storage.add(workout);
+    }
+    navigate(`/${id}/timer`);
+  }
   const addValues = [5, 10, 15, 20, 25, 30];
   return (
     <div className="container">
       <h4>Workout</h4>
       <div className="row row-cols-auto">
-        {workout.exercises.map((value) => (
+        {workout.exercises.map(exercise => (
           <div className="">
-            <span key={value} className="badge text-bg-primary">{value}</span>
+            <span className="badge text-bg-primary">{exercise.duration}</span>
           </div>
         ))}
       </div>
@@ -39,9 +56,9 @@ function EditWorkoutPage() {
           <label className="btn btn-outline-primary" htmlFor="addRest">Add rest</label>
         </div>
         <div className="row row-cols-auto">
-        {addValues.map((value) => (
+        {addValues.map(value => (
           <button key={value} type="button" className="btn btn-primary m-1"
-            onClick={() => addExercise(value)}>
+            onClick={() => addExercise({type: 'work', duration: value})}>
             {value} sec
           </button>
         ))}
@@ -51,7 +68,7 @@ function EditWorkoutPage() {
           <input id="set-count" type="number" className="form-control w-50" value={workout.numSets} onChange={handleNumSetsChanged} />
         </div>
       </div >
-      <Link to="/create/timer" className="btn btn-success btn-lg">Start</Link>
+      <button className="btn btn-success btn-lg" onClick={handleStart}>Start</button>
       <Link to="/" className="btn btn-secondary btn-sm">Cancel</Link>
       <Link to="/" className="btn btn-primary btn-sm">Save</Link>
     </div>
@@ -59,4 +76,12 @@ function EditWorkoutPage() {
   );
 }
 
-export default EditWorkoutPage
+
+export function CreateWorkoutPage() {
+  return WorkoutPage();
+}
+
+export function EditWorkoutPage() {
+  const { workoutId } = useParams();
+  return WorkoutPage(workoutId);
+}

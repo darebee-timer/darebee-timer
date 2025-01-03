@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import ErrorPage from "./error-page";
 import App from './App.tsx'
-import EditWorkoutPage from './edit-workout-page.tsx'
+import { EditWorkoutPage, CreateWorkoutPage } from './edit-workout-page.tsx'
 import TimerPage from './timer-page.tsx'
 import OverviewPage from './overview-page.tsx'
 import './scss/styles.scss'
@@ -23,11 +23,15 @@ const router = createBrowserRouter([
       },
       {
         path: "create",
-        element: <EditWorkoutPage />,
+        element: <CreateWorkoutPage />,
       },
       {
-        path: "create/timer",
+        path: ":workoutId/timer",
         element: <TimerPage />,
+      },
+      {
+        path: ":workoutId/edit",
+        element: <EditWorkoutPage />,
       },
     ],
   },
