@@ -22,7 +22,7 @@ function OverviewPage() {
               )}
               {workoutEntry.workout.numSets} sets
             </p>
-            <a href={`/${workoutEntry.id}/edit`} className="btn btn-primary">Edit</a>
+            <Link to={`/${workoutEntry.id}/edit`} className="btn btn-primary">Edit</Link>
           </div>
         </div>
       ))}
