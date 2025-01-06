@@ -53,4 +53,9 @@ export class WorkoutStorage {
         localStorage.setItem(WorkoutStorage.KEY, JSON.stringify(this.workouts));
         return id;
     }
+
+    remove(id: string) {
+        this.workouts = this.workouts.filter(entry => entry.id !== id);
+        localStorage.setItem(WorkoutStorage.KEY, JSON.stringify(this.workouts));
+    }
 }

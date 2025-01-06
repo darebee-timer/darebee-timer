@@ -1,8 +1,14 @@
 import { Link } from 'react-router-dom';
 import { WorkoutStorage } from './helper/storage';
+import { useState } from 'react';
 
 function OverviewPage() {
-  const workouts = new WorkoutStorage().getRecent();
+  const storage = new WorkoutStorage();
+  const [workouts, setWorkouts] = useState(storage.getRecent());
+  const removeWorkout = (workoutId: string) => {
+    storage.remove(workoutId);
+    setWorkouts(storage.getRecent());
+  }
   return (
     <>
       <div className="card mx-auto my-1" style={{ width: '18rem' }}>
@@ -26,7 +32,10 @@ function OverviewPage() {
               </div>
               {workoutEntry.workout.numSets} sets
             </p>
-            <Link to={`/${workoutEntry.id}/edit`} className="btn btn-primary">Edit</Link>
+            <div className="d-flex gap-2">
+              <Link to={`/${workoutEntry.id}/edit`} className="btn btn-primary">Edit</Link>
+              <button className="btn btn-danger" onClick={() => removeWorkout(workoutEntry.id)}>Remove</button>
+            </div>
           </div>
         </div>
       ))}
