@@ -5,7 +5,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import beepSound from './sounds/beep.wav'
 import { Workout } from './helper/workout';
 import { getWorkoutState, stepState } from './helper/timer-state';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { WorkoutStorage } from './helper/storage';
 
 // for android audio playback is already transient
@@ -69,26 +69,40 @@ function TimerPage() {
 
   return (
     <>
-      <div className="container">
-        <button type="button" className="btn btn-primary btn-lg fs-3 m-2" onClick={handlePrevious}>
-          &#x23EE;&#xFE0E;
-        </button>
-        <button type="button" className="btn btn-primary btn-lg fs-3 m-2" onClick={handlePlayPause}
-          dangerouslySetInnerHTML={{ __html: paused ? "&#x23F5;&#xFE0E;" : "&#x23F8;&#xFE0E;" }}>
-        </button>
-        <button type="button" className="btn btn-primary btn-lg fs-3 m-2" onClick={handleNext}>
-          &#x23ED;&#xFE0E;
-        </button>
-        <button type="button" className="btn btn-primary btn-lg fs-3 m-2" onClick={handleReset}>
-          &#10226;
-        </button>
+      <div className="container py-4" style={{maxWidth: '35em'}}>
         <CircularProgressbarWithChildren value={state.exercise.fraction * 100}>
-          <div id="timer" className="text-center" style={{ fontSize: 80 }}>
-            {state.exercise.duration - state.exercise.position}
+          <div className="position-absolute top-0 start-0">
+            <Link to={`/${workoutId}/edit`} className="btn btn-primary btn-sm fs-3 m-2">Edit</Link>
           </div>
+          <div className="position-absolute top-0 end-0 fs-3">set {state.overall.set + 1}/{workout.numSets}</div>
+          { state.overall.fraction < 1 ? 
+            <>
+              <div id="timer" className="text-center" style={{ fontSize: 80 }}>
+                {state.exercise.duration - state.exercise.position}
+              </div>
+              <div id="workType" className="text-center fs-3">
+                {state.exercise.type !== 'preCount' ? state.exercise.type : ''}
+              </div>
+            </>
+            : <div className="text-center fs-3">finished!</div>
+          }
         </CircularProgressbarWithChildren>
-        <div className="progress" role="progressbar">
+        <div className="progress my-4" role="progressbar">
           <div className="progress-bar" style={{ width: `${state.overall.fraction * 100}%` }}></div>
+        </div>
+        <div id="buttonRow" className="text-center">
+          <button type="button" className="btn btn-primary btn-lg fs-3 m-2" onClick={handlePrevious}>
+            &#x23EE;&#xFE0E;
+          </button>
+          <button type="button" className="btn btn-primary btn-lg fs-3 m-2" onClick={handlePlayPause}
+            dangerouslySetInnerHTML={{ __html: paused ? "&#x23F5;&#xFE0E;" : "&#x23F8;&#xFE0E;" }}>
+          </button>
+          <button type="button" className="btn btn-primary btn-lg fs-3 m-2" onClick={handleNext}>
+            &#x23ED;&#xFE0E;
+          </button>
+          <button type="button" className="btn btn-primary btn-lg fs-3 m-2" onClick={handleReset}>
+            &#10226;
+          </button>
         </div>
       </div>
     </>
