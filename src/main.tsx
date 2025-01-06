@@ -10,6 +10,7 @@ import { EditWorkoutPage, CreateWorkoutPage } from './edit-workout-page.tsx'
 import TimerPage from './timer-page.tsx'
 import OverviewPage from './overview-page.tsx'
 import './scss/styles.scss'
+import InfoPage from './info-page.tsx';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: ":workoutId/edit",
         element: <EditWorkoutPage />,
+      },
+      {
+        path: "info",
+        element: <InfoPage />,
       },
     ],
   },

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-import beepSound from './sounds/beep.wav'
+import beepSound from './assets/sounds/beep.wav'
 import { Workout } from './helper/workout';
 import { getWorkoutState, stepState } from './helper/timer-state';
 import { Link, useParams } from 'react-router-dom';
