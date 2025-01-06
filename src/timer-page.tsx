@@ -8,6 +8,12 @@ import { getWorkoutState, stepState } from './helper/timer-state';
 import { useParams } from 'react-router-dom';
 import { WorkoutStorage } from './helper/storage';
 
+// for android audio playback is already transient
+// for ios we use this new API currently only implemented by safari
+if (navigator.audioSession) {
+    navigator.audioSession.type = 'transient';
+}
+
 const beep = new Audio(beepSound);
 
 
