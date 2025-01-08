@@ -11,7 +11,7 @@ import workspaceStorage from './helper/storage';
 // for android audio playback is already transient
 // for ios we use this new API currently only implemented by safari
 if (navigator.audioSession) {
-    navigator.audioSession.type = 'transient';
+  navigator.audioSession.type = 'transient';
 }
 
 const beep = new Audio(beepSound);
@@ -69,19 +69,24 @@ function TimerPage() {
 
   return (
     <>
-      <div className="container py-4" style={{maxWidth: '35em'}}>
+      <div className="container py-4" style={{ maxWidth: '35em' }}>
         <CircularProgressbarWithChildren value={state.exercise.fraction * 100}>
           <div className="position-absolute top-0 start-0">
             <Link to={`/${workoutId}/edit`} className="btn btn-primary btn-sm fs-3 m-2">Edit</Link>
           </div>
-          <div className="position-absolute top-0 end-0 fs-3">set {state.overall.set + 1}/{workout.numSets}</div>
-          { state.overall.fraction < 1 ? 
+          <div className="position-absolute top-0 end-0 fs-3">
+            {state.exercise.type == "getReady"
+              ? `set 0/${workout.numSets}`
+              : `set ${state.overall.set + 1}/${workout.numSets}`
+            }
+          </div>
+          {state.overall.fraction < 1 ?
             <>
               <div id="timer" className="text-center" style={{ fontSize: 80 }}>
                 {state.exercise.duration - state.exercise.position}
               </div>
               <div id="workType" className="text-center fs-3">
-                {state.exercise.type !== 'getReady' ? state.exercise.type : ''}
+                {{ getReady: "Get ready!", work: "Work", rest: "Rest" }[state.exercise.type]}
               </div>
             </>
             : <div className="text-center fs-3">finished!</div>
