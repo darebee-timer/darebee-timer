@@ -1,4 +1,5 @@
 import React from "react";
+import NumberInputRow from "./number-input-row";
 
 export type AddExerciseDialogProps = {
     show: boolean,
@@ -7,12 +8,9 @@ export type AddExerciseDialogProps = {
 }
 
 function AddExerciseDialog({ show, onClose, onAdd }: AddExerciseDialogProps) {
-    const [duration, setDuration] = React.useState("30");
-    const handleDurationChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDuration(event.target.value);
-    }
+    const [duration, setDuration] = React.useState(30);
     const handleAdd = () => {
-        onAdd(Number(duration));
+        onAdd(duration);
     };
 
     if (!show) return null;
@@ -25,10 +23,7 @@ function AddExerciseDialog({ show, onClose, onAdd }: AddExerciseDialogProps) {
                     <button type="button" className="btn-close" onClick={onClose}></button>
                 </div>
                 <div className="modal-body">
-                    <div className="mb-3">
-                        <label htmlFor="duration" className="form-label">Duration</label>
-                        <input id="duration" type="number" className="form-control" style={{ width: '10em' }} value={duration} onChange={handleDurationChanged} />
-                    </div>
+                    <NumberInputRow id="duration" value={duration} onValueChanged={setDuration} />
                 </div>
                 <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>

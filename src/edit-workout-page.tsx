@@ -4,6 +4,7 @@ import { Exercise, Workout } from './helper/workout';
 import { WorkoutStorage } from './helper/storage';
 import { getDurationOfSet } from './helper/timer-state';
 import AddExerciseDialog from './add-exercise-dialog';
+import NumberInputRow from './number-input-row';
 
 const INITIAL_WORKOUT = {
   exercises: [],
@@ -67,9 +68,9 @@ function WorkoutPage({ workoutId }: { workoutId?: string }) {
 
   const handleDeleteExercise = () => {
     setWorkout(currentWorkout => ({
-        ...currentWorkout,
-        exercises: currentWorkout.exercises.slice(0, -1), // remove last entry
-      }));
+      ...currentWorkout,
+      exercises: currentWorkout.exercises.slice(0, -1), // remove last entry
+    }));
   }
 
   return (
@@ -78,7 +79,7 @@ function WorkoutPage({ workoutId }: { workoutId?: string }) {
         show={showAddExerciseDialog}
         onClose={() => setShowAddExerciseDialog(false)}
         onAdd={(duration) => {
-          addExercise({duration, type: addType});
+          addExercise({ duration, type: addType });
           setShowAddExerciseDialog(false);
         }} />
 
@@ -118,18 +119,24 @@ function WorkoutPage({ workoutId }: { workoutId?: string }) {
           </button>
         </div>
       </div>
-      <div className="mb-3">
-        <label htmlFor="set-count" className="form-label">Number of sets</label>
-        <input id="set-count" type="number" className="form-control" style={{ width: '10em' }} value={workout.numSets} onChange={handleNumSetsChanged} />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="rest-between-sets" className="form-label">Rest duration between sets (seconds)</label>
-        <input id="rest-between-sets" type="number" className="form-control" style={{ width: '10em' }} value={workout.restBetweenSetsDuration} onChange={handleRestBetweenSetsChanged} />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="pre-count-duration" className="form-label">Pre count duration (seconds)</label>
-        <input id="pre-count-duration" type="number" className="form-control" style={{ width: '10em' }} value={workout.preCountDuration} onChange={handlePreCountChanged} />
-      </div>
+      <NumberInputRow id="numSets" value={workout.numSets} onValueChanged={(value) => {
+        setWorkout(currentWorkout => ({
+          ...currentWorkout,
+          numSets: value
+        }));
+      }} />
+      <NumberInputRow id="restBetweenSets" value={workout.restBetweenSetsDuration} onValueChanged={(value) => {
+        setWorkout(currentWorkout => ({
+          ...currentWorkout,
+          restBetweenSetsDuration: value
+        }));
+      }} />
+      <NumberInputRow id="getReady" value={workout.preCountDuration} onValueChanged={(value) => {
+        setWorkout(currentWorkout => ({
+          ...currentWorkout,
+          preCountDuration: value
+        }));
+      }} />
       <div className="d-flex gap-2">
         <button className="btn btn-success btn-lg" onClick={handleStart}>Start</button>
         <Link to="/" className="btn btn-secondary btn-lg">Cancel</Link>
@@ -141,7 +148,7 @@ function WorkoutPage({ workoutId }: { workoutId?: string }) {
 
 
 export function CreateWorkoutPage() {
-  return <WorkoutPage/>;
+  return <WorkoutPage />;
 }
 
 export function EditWorkoutPage() {

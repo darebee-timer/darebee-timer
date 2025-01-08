@@ -33,13 +33,14 @@ export class WorkoutStorage {
 
     set(id: string, workout: Workout) {
         const idx = this.workouts.findIndex(entry => entry.id == id);
-        if (idx !== 1) return;
+        if (idx < 0) return;
         const entry = this.workouts[idx];
         entry.lastUsed = new Date();
         entry.workout = workout;
         // move to front
         this.workouts.splice(idx, 1);
         this.workouts.unshift(entry);
+        this.save();
     }
 
     add(workout: Workout): string {
@@ -50,12 +51,16 @@ export class WorkoutStorage {
             workout,
             id,
         });
-        localStorage.setItem(WorkoutStorage.KEY, JSON.stringify(this.workouts));
+        this.save();
         return id;
     }
 
     remove(id: string) {
         this.workouts = this.workouts.filter(entry => entry.id !== id);
+        this.save();
+    }
+
+    save():void {
         localStorage.setItem(WorkoutStorage.KEY, JSON.stringify(this.workouts));
     }
 }
