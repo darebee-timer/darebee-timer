@@ -23,7 +23,10 @@ function AddExerciseDialog({ show, onClose, onAdd }: AddExerciseDialogProps) {
                     <button type="button" className="btn-close" onClick={onClose}></button>
                 </div>
                 <div className="modal-body">
-                    <NumberInputRow id="duration" value={duration} onValueChanged={setDuration} />
+                    <NumberInputRow id="duration"
+                        label="Duration (seconds)"
+                        value={duration}
+                        onValueChanged={setDuration} />
                 </div>
                 <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>

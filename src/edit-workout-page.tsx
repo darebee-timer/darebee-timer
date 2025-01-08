@@ -9,7 +9,7 @@ import NumberInputRow from './number-input-row';
 const INITIAL_WORKOUT = {
   exercises: [],
   numSets: 3,
-  preCountDuration: 3,
+  getReadyDuration: 3,
   restBetweenSetsDuration: 5,
 };
 
@@ -98,24 +98,33 @@ function WorkoutPage({ workoutId }: { workoutId?: string }) {
           </button>
         </div>
       </div>
-      <NumberInputRow id="numSets" value={workout.numSets} onValueChanged={(value) => {
-        setWorkout(currentWorkout => ({
-          ...currentWorkout,
-          numSets: value
-        }));
-      }} />
-      <NumberInputRow id="restBetweenSets" value={workout.restBetweenSetsDuration} onValueChanged={(value) => {
-        setWorkout(currentWorkout => ({
-          ...currentWorkout,
-          restBetweenSetsDuration: value
-        }));
-      }} />
-      <NumberInputRow id="getReady" value={workout.preCountDuration} onValueChanged={(value) => {
-        setWorkout(currentWorkout => ({
-          ...currentWorkout,
-          preCountDuration: value
-        }));
-      }} />
+      <NumberInputRow id="numSets"
+        label="Number of Sets"
+        value={workout.numSets}
+        onValueChanged={(value) => {
+          setWorkout(currentWorkout => ({
+            ...currentWorkout,
+            numSets: value
+          }));
+        }} />
+      <NumberInputRow id="restBetweenSets"
+        label="Rest duration between sets (seconds)"
+        value={workout.restBetweenSetsDuration}
+        onValueChanged={(value) => {
+          setWorkout(currentWorkout => ({
+            ...currentWorkout,
+            restBetweenSetsDuration: value
+          }));
+        }} />
+      <NumberInputRow id="getReady"
+        label="Duration to get ready (seconds)"
+        value={workout.getReadyDuration}
+        onValueChanged={(value) => {
+          setWorkout(currentWorkout => ({
+            ...currentWorkout,
+            getReadyDuration: value
+          }));
+        }} />
       <div className="d-flex gap-2">
         <button className="btn btn-success btn-lg" onClick={handleStart}>Start</button>
         <Link to="/" className="btn btn-secondary btn-lg">Cancel</Link>

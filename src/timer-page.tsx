@@ -81,7 +81,7 @@ function TimerPage() {
                 {state.exercise.duration - state.exercise.position}
               </div>
               <div id="workType" className="text-center fs-3">
-                {state.exercise.type !== 'preCount' ? state.exercise.type : ''}
+                {state.exercise.type !== 'getReady' ? state.exercise.type : ''}
               </div>
             </>
             : <div className="text-center fs-3">finished!</div>

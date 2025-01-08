@@ -16,5 +16,5 @@ export type Workout = {
     // time of rest between sets
     restBetweenSetsDuration: number,
     // number of seconds before first set
-    preCountDuration: number,
+    getReadyDuration: number,
 };

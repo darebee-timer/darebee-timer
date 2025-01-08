@@ -2,7 +2,7 @@
 import { Workout, ExerciseType } from './workout';
 
 export type ExerciseState = {
-    type: ExerciseType | 'preCount';
+    type: ExerciseType | 'getReady';
     position: number;
     fraction: number;
     duration: number;
@@ -45,19 +45,19 @@ function getExerciseState(workout: Workout, pos: number): ExerciseState {
 
 export function getWorkoutState(workout: Workout, pos: number): WorkoutState {
     const setDuration = getDurationOfSet(workout);
-    const totalDuration = workout.preCountDuration
+    const totalDuration = workout.getReadyDuration
         + setDuration * workout.numSets
         + workout.restBetweenSetsDuration * (workout.numSets - 1);
 
     // first handle first count down
-    if (pos < workout.preCountDuration) {
+    if (pos < workout.getReadyDuration) {
         return {
             position: pos,
             exercise: {
-                type: 'preCount',
+                type: 'getReady',
                 position: pos,
-                fraction: pos / workout.preCountDuration,
-                duration: workout.preCountDuration,
+                fraction: pos / workout.getReadyDuration,
+                duration: workout.getReadyDuration,
             },
             overall: {
                 set: 1,
@@ -68,7 +68,7 @@ export function getWorkoutState(workout: Workout, pos: number): WorkoutState {
     }
 
     // find current exercise
-    const posInWorkout = pos - workout.preCountDuration;
+    const posInWorkout = pos - workout.getReadyDuration;
     const setAndRestDuration = setDuration + workout.restBetweenSetsDuration;
     const currentSet = Math.floor(posInWorkout / setAndRestDuration);
     const posInExercises = posInWorkout % setAndRestDuration;
