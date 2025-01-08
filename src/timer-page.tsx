@@ -6,7 +6,7 @@ import beepSound from './assets/sounds/beep.wav'
 import { Workout } from './helper/workout';
 import { getWorkoutState, stepState } from './helper/timer-state';
 import { Link, useParams } from 'react-router-dom';
-import { WorkoutStorage } from './helper/storage';
+import workspaceStorage from './helper/storage';
 
 // for android audio playback is already transient
 // for ios we use this new API currently only implemented by safari
@@ -19,7 +19,7 @@ const beep = new Audio(beepSound);
 
 function TimerPage() {
   const { workoutId } = useParams();
-  const workout: Workout = new WorkoutStorage().get(workoutId!)!.workout;
+  const workout: Workout = workspaceStorage.get(workoutId!)!.workout;
   const [paused, setPaused] = React.useState(true);
   const [state, setState] = React.useState(getWorkoutState(workout, 0));
   const timerRef = React.useRef<NodeJS.Timeout | undefined>(undefined);

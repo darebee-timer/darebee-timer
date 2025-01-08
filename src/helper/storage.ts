@@ -64,3 +64,7 @@ export class WorkoutStorage {
         localStorage.setItem(WorkoutStorage.KEY, JSON.stringify(this.workouts));
     }
 }
+
+const workspaceStorage = new WorkoutStorage();
+
+export default workspaceStorage;

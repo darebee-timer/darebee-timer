@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Exercise, Workout } from './helper/workout';
-import { WorkoutStorage } from './helper/storage';
+import workspaceStorage from './helper/storage';
 import { getDurationOfSet } from './helper/timer-state';
 import AddExerciseDialog from './add-exercise-dialog';
 import NumberInputRow from './number-input-row';
@@ -17,31 +17,11 @@ const ADD_VALUES = [5, 10, 15, 20, 30];
 
 
 function WorkoutPage({ workoutId }: { workoutId?: string }) {
-  const [workout, setWorkout] = React.useState<Workout>(workoutId ? new WorkoutStorage().get(workoutId)!.workout : INITIAL_WORKOUT);
+
+  const [workout, setWorkout] = React.useState<Workout>(workoutId ? workspaceStorage.get(workoutId)!.workout : INITIAL_WORKOUT);
 
   const [addType, setAddType] = React.useState<'work' | 'rest'>('work');
   const handleAddTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => setAddType(event.target.value as 'work' | 'rest');
-
-  const handleNumSetsChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setWorkout(currentWorkout => ({
-      ...currentWorkout,
-      numSets: Number(event.target.value)
-    }));
-  }
-
-  const handleRestBetweenSetsChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setWorkout(currentWorkout => ({
-      ...currentWorkout,
-      restBetweenSetsDuration: Number(event.target.value)
-    }));
-  }
-
-  const handlePreCountChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setWorkout(currentWorkout => ({
-      ...currentWorkout,
-      preCountDuration: Number(event.target.value)
-    }));
-  }
 
   const [showAddExerciseDialog, setShowAddExerciseDialog] = React.useState(false);
 
@@ -56,12 +36,11 @@ function WorkoutPage({ workoutId }: { workoutId?: string }) {
   }
 
   const handleStart = () => {
-    const storage = new WorkoutStorage();
     let id = workoutId;
     if (workoutId) {
-      storage.set(workoutId, workout);
+      workspaceStorage.set(workoutId, workout);
     } else {
-      id = storage.add(workout);
+      id = workspaceStorage.add(workout);
     }
     navigate(`/${id}/timer`);
   };

@@ -1,13 +1,12 @@
 import { Link } from 'react-router-dom';
-import { WorkoutStorage } from './helper/storage';
+import workspaceStorage from './helper/storage';
 import React from 'react';
 
 function OverviewPage() {
-  const storage = new WorkoutStorage();
-  const [workouts, setWorkouts] = React.useState(storage.getRecent());
+  const [workouts, setWorkouts] = React.useState(workspaceStorage.getRecent());
   const removeWorkout = (workoutId: string) => {
-    storage.remove(workoutId);
-    setWorkouts(storage.getRecent());
+    workspaceStorage.remove(workoutId);
+    setWorkouts(workspaceStorage.getRecent());
   }
   return (
     <>
