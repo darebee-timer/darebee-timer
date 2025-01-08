@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
@@ -23,7 +23,7 @@ function TimerPage() {
   const [paused, setPaused] = React.useState(true);
   const [state, setState] = React.useState(getWorkoutState(workout, 0));
   const timerRef = React.useRef<NodeJS.Timeout | undefined>(undefined);
-  useEffect(() => {
+  React.useEffect(() => {
     return () => {
       // cleanup timeout
       if (timerRef.current)

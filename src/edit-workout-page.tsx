@@ -1,8 +1,9 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Exercise, Workout } from './helper/workout';
 import { WorkoutStorage } from './helper/storage';
 import { getDurationOfSet } from './helper/timer-state';
+import AddExerciseDialog from './add-exercise-dialog';
 
 const INITIAL_WORKOUT = {
   exercises: [],
@@ -18,28 +19,30 @@ function WorkoutPage({ workoutId }: { workoutId?: string }) {
   const [workout, setWorkout] = React.useState<Workout>(workoutId ? new WorkoutStorage().get(workoutId)!.workout : INITIAL_WORKOUT);
 
   const [addType, setAddType] = React.useState<'work' | 'rest'>('work');
-  const handleAddTypeChange = (event: ChangeEvent<HTMLInputElement>) => setAddType(event.target.value as 'work' | 'rest');
+  const handleAddTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => setAddType(event.target.value as 'work' | 'rest');
 
-  const handleNumSetsChanged = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleNumSetsChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setWorkout(currentWorkout => ({
       ...currentWorkout,
       numSets: Number(event.target.value)
     }));
   }
 
-  const handleRestBetweenSetsChanged = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleRestBetweenSetsChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setWorkout(currentWorkout => ({
       ...currentWorkout,
       restBetweenSetsDuration: Number(event.target.value)
     }));
   }
 
-  const handlePreCountChanged = (event: ChangeEvent<HTMLInputElement>) => {
+  const handlePreCountChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setWorkout(currentWorkout => ({
       ...currentWorkout,
       preCountDuration: Number(event.target.value)
     }));
   }
+
+  const [showAddExerciseDialog, setShowAddExerciseDialog] = React.useState(false);
 
   const navigate = useNavigate();
 
@@ -62,10 +65,6 @@ function WorkoutPage({ workoutId }: { workoutId?: string }) {
     navigate(`/${id}/timer`);
   };
 
-  const openAddExercisePopup = () => {
-    // TODO use modal?
-  };
-
   const handleDeleteExercise = () => {
     setWorkout(currentWorkout => ({
         ...currentWorkout,
@@ -75,6 +74,14 @@ function WorkoutPage({ workoutId }: { workoutId?: string }) {
 
   return (
     <div className="container">
+      <AddExerciseDialog
+        show={showAddExerciseDialog}
+        onClose={() => setShowAddExerciseDialog(false)}
+        onAdd={(duration) => {
+          addExercise({duration, type: addType});
+          setShowAddExerciseDialog(false);
+        }} />
+
       <h4 className="mb-4">Edit Workout</h4>
       <div className="d-flex flex-wrap gap-4">
         {workout.exercises.map((exercise, index) => (
@@ -102,7 +109,7 @@ function WorkoutPage({ workoutId }: { workoutId?: string }) {
             </button>
           ))}
           <button key="add" type="button" className="btn btn-primary m-1"
-            onClick={openAddExercisePopup}>
+            onClick={() => setShowAddExerciseDialog(true)}>
             other
           </button>
           <button key="delete" type="button" className="btn btn-danger m-1"
