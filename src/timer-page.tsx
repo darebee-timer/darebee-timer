@@ -9,9 +9,12 @@ import { Workout } from './helper/workout';
 import { getWorkoutState, stepState } from './helper/timer-state';
 import { Link, useParams } from 'react-router-dom';
 import workspaceStorage from './helper/storage';
+import IosHint from './ios-hint';
 
 // for android audio playback is already transient
 // for ios we use this new API currently only implemented by safari
+// unfortuately, this means that you need to turn off silence mode,
+// because the sound is played via the ring channel.
 if ('audioSession' in navigator) {
   (navigator.audioSession as {type: string}).type = 'transient';
 }
@@ -80,6 +83,7 @@ function TimerPage() {
   return (
     <>
       <div className="container py-4" style={{ maxWidth: '35em' }}>
+        <IosHint />
         <CircularProgressbarWithChildren value={state.exercise.fraction * 100}>
           <div className="position-absolute top-0 start-0">
             <Link to={`/${workoutId}/edit`} className="btn btn-primary btn-sm fs-3 m-2">Edit</Link>
