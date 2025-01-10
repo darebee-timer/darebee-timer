@@ -2,7 +2,9 @@ import React from 'react';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-import beepSound from './assets/sounds/beep.wav'
+import beepWav from './assets/sounds/beep.wav'
+import startWav from './assets/sounds/start.wav'
+import endWav from './assets/sounds/end.wav'
 import { Workout } from './helper/workout';
 import { getWorkoutState, stepState } from './helper/timer-state';
 import { Link, useParams } from 'react-router-dom';
@@ -10,11 +12,13 @@ import workspaceStorage from './helper/storage';
 
 // for android audio playback is already transient
 // for ios we use this new API currently only implemented by safari
-if (navigator.audioSession) {
-  navigator.audioSession.type = 'transient';
+if ('audioSession' in navigator) {
+  (navigator.audioSession as {type: string}).type = 'transient';
 }
 
-const beep = new Audio(beepSound);
+const beepSound = new Audio(beepWav);
+const startSound = new Audio(startWav);
+const endSound = new Audio(endWav);
 
 
 function TimerPage() {
@@ -43,8 +47,14 @@ function TimerPage() {
         return workoutState;
       }
       const newState = getWorkoutState(workout, workoutState.position + 1);
-      if (newState.exercise.duration - newState.exercise.position <= 3)
-        beep.play();
+      if (newState.exercise.fraction == 0) {
+        if (newState.exercise.type == 'work')
+          startSound.play();
+        else
+          endSound.play();
+      }
+      else if (newState.exercise.duration - newState.exercise.position <= 3)
+        beepSound.play();
       return newState;
     });
   }
