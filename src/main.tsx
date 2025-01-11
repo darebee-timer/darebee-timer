@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import {
-  createBrowserRouter,
+  createHashRouter,
   RouterProvider,
 } from "react-router-dom";
 import ErrorPage from "./error-page";
@@ -12,7 +12,7 @@ import OverviewPage from './overview-page.tsx'
 import './scss/styles.scss'
 import InfoPage from './info-page.tsx';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <App />,
