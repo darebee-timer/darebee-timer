@@ -8,9 +8,9 @@ import NumberInputRow from './number-input-row';
 
 const INITIAL_WORKOUT = {
   exercises: [],
-  numSets: 3,
-  getReadyDuration: 3,
-  restBetweenSetsDuration: 5,
+  numSets: 7,
+  getReadyDuration: 10,
+  restBetweenSetsDuration: 120,
 };
 
 const ADD_VALUES = [5, 10, 15, 20, 30];
